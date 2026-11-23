@@ -1,0 +1,41 @@
+# Freebuff Desktop finds this folder's chats through project-id; do not commit it
+/project-id
+
+# Secrets / local environment
+.env
+.env.local
+.env.*.local
+
+# Local database + Python caches
+*.sqlite
+*.sqlite-journal
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Logs and archives
+*.log
+*.zip
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+
+# Freebuff agent workspace (logs, notes)
+/.freebuff/
+
+# Unrelated Vite/VCard experiment left in frontend — not part of the PeoplePulse app
+/frontend/src/
+/frontend/public/
+/frontend/package.json
+/frontend/package-lock.json
+/frontend/vite.config.js
+/frontend/web-digital-mantra-logo.jpg
