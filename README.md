@@ -2,12 +2,6 @@
 
 PeoplePulse is an AI-powered HRMS and recruitment prototype built for role-based workforce management. It connects Management Admin, Senior Manager, HR Recruiter, and Employee dashboards so employee, attendance, leave, payroll, recruitment, performance, and AI data stay in sync across the app.
 
-## Live Demo
-
-🌐 Deployed Application:
-
-https://aether12345678.onrender.com/
-
 ## Tech Stack
 
 - Frontend: HTML, CSS, vanilla JavaScript, Chart.js
