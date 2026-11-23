@@ -17,18 +17,183 @@ from backend.app.schemas import (
 
 
 SKILL_ALIASES = {
-    "fastapi": "FastAPI",
+    # Languages
     "python": "Python",
-    "postgresql": "PostgreSQL",
-    "postgres": "PostgreSQL",
-    "docker": "Docker",
-    "kubernetes": "Kubernetes",
+    "java": "Java",
+    "javascript": "JavaScript",
+    "typescript": "TypeScript",
+    "c++": "C++",
+    "c#": "C#",
+    "golang": "Go",
+    "ruby": "Ruby",
+    "php": "PHP",
+    "kotlin": "Kotlin",
+    "swift": "Swift",
+    "scala": "Scala",
+    "rust": "Rust",
+    "matlab": "MATLAB",
+    # Frontend
+    "react native": "React Native",
+    "react": "React",
+    "next.js": "Next.js",
+    "nextjs": "Next.js",
+    "angular": "Angular",
+    "vue": "Vue",
+    "svelte": "Svelte",
+    "html": "HTML",
+    "css": "CSS",
+    "sass": "Sass",
+    "tailwind": "Tailwind CSS",
+    "redux": "Redux",
+    "webpack": "Webpack",
+    "jest": "Jest",
+    "accessibility": "Accessibility",
+    "a11y": "Accessibility",
+    "responsive ui": "Responsive UI",
+    "responsive design": "Responsive UI",
+    "component design": "Component Design",
+    "performance optimization": "Performance Optimization",
+    "api integration": "API Integration",
+    "ui design": "UI Design",
+    "ux research": "UX Research",
+    "figma": "Figma",
+    "wireframing": "Wireframing",
+    "prototyping": "Prototyping",
+    "design systems": "Design Systems",
+    "user testing": "User Testing",
+    "interaction design": "Interaction Design",
+    "product thinking": "Product Thinking",
+    # Backend
+    "fastapi": "FastAPI",
+    "django": "Django",
+    "flask": "Flask",
+    "node.js": "Node.js",
+    "nodejs": "Node.js",
+    "express": "Express",
+    "spring boot": "Spring Boot",
+    "graphql": "GraphQL",
+    "rest": "REST APIs",
     "microservices": "Microservices",
     "system design": "System Design",
-    "rest": "REST APIs",
-    "react": "React",
+    "authentication": "Authentication",
+    "authorization": "Authorization",
+    "oauth": "OAuth",
+    "jwt": "JWT",
+    "grpc": "gRPC",
+    "kafka": "Kafka",
+    "message queues": "Message Queues",
+    "celery": "Celery",
+    "api design": "API Design",
+    "cloud deployment": "Cloud Deployment",
+    "serverless": "Serverless",
+    # Data
     "sql": "SQL",
+    "postgresql": "PostgreSQL",
+    "postgres": "PostgreSQL",
+    "mysql": "MySQL",
+    "mongodb": "MongoDB",
+    "redis": "Redis",
+    "elasticsearch": "Elasticsearch",
+    "snowflake": "Snowflake",
+    "bigquery": "BigQuery",
+    "spark": "Spark",
+    "hadoop": "Hadoop",
+    "airflow": "Airflow",
+    "dbt": "dbt",
+    "etl": "ETL",
+    "data pipelines": "Data Pipelines",
+    "pandas": "Pandas",
+    "numpy": "NumPy",
+    "scikit-learn": "scikit-learn",
+    "sklearn": "scikit-learn",
+    "tensorflow": "TensorFlow",
+    "pytorch": "PyTorch",
+    "machine learning": "Machine Learning",
+    "deep learning": "Deep Learning",
+    "statistics": "Statistics",
+    "data visualization": "Data Visualization",
+    "tableau": "Tableau",
+    "power bi": "Power BI",
+    "predictive modeling": "Predictive Modeling",
+    "nlp": "NLP",
+    "computer vision": "Computer Vision",
+    "experimentation": "Experimentation",
+    "a/b testing": "A/B Testing",
+    "data modeling": "Data Modeling",
+    "business insights": "Business Insights",
+    # DevOps and cloud
+    "docker": "Docker",
+    "kubernetes": "Kubernetes",
     "aws": "AWS",
+    "azure": "Azure",
+    "gcp": "GCP",
+    "terraform": "Terraform",
+    "ansible": "Ansible",
+    "jenkins": "Jenkins",
+    "ci/cd": "CI/CD",
+    "github actions": "GitHub Actions",
+    "linux": "Linux",
+    "bash": "Bash",
+    "monitoring": "Monitoring",
+    "prometheus": "Prometheus",
+    "grafana": "Grafana",
+    "logging": "Logging",
+    "observability": "Observability",
+    "incident response": "Incident Response",
+    "security": "Security",
+    "scalability": "Scalability",
+    "load balancing": "Load Balancing",
+    "nginx": "Nginx",
+    # QA
+    "selenium": "Selenium",
+    "cypress": "Cypress",
+    "playwright": "Playwright",
+    "automation testing": "Automation Testing",
+    "manual testing": "Manual Testing",
+    "test cases": "Test Cases",
+    "postman": "Postman",
+    # Mobile
+    "android": "Android",
+    "ios": "iOS",
+    "flutter": "Flutter",
+    # Product, business and operations
+    "product strategy": "Product Strategy",
+    "roadmap": "Roadmap Planning",
+    "user research": "User Research",
+    "analytics": "Analytics",
+    "stakeholder management": "Stakeholder Management",
+    "agile": "Agile",
+    "scrum": "Scrum",
+    "jira": "Jira",
+    "prioritization": "Prioritization",
+    "prd": "PRD Writing",
+    "go-to-market": "Go-to-Market",
+    "project management": "Project Management",
+    "leadership": "Leadership",
+    "communication": "Communication",
+    "process excellence": "Process Excellence",
+    "risk tracking": "Risk Tracking",
+    "business analysis": "Business Analysis",
+    "requirements gathering": "Requirements Gathering",
+    "salesforce": "Salesforce",
+    "hubspot": "HubSpot",
+    "crm": "CRM",
+    "negotiation": "Negotiation",
+    "pipeline management": "Pipeline Management",
+    "customer success": "Customer Success",
+    "account management": "Account Management",
+    "seo": "SEO",
+    "content marketing": "Content Marketing",
+    "campaign management": "Campaign Management",
+    "recruitment": "Recruitment",
+    "onboarding": "Onboarding",
+    "hr operations": "HR Operations",
+    "payroll": "Payroll",
+    "compliance": "Compliance",
+    "excel": "Excel",
+    "financial modeling": "Financial Modeling",
+    "budgeting": "Budgeting",
+    "forecasting": "Forecasting",
 }
 
 LAST_GEMINI_ERROR: str | None = None
@@ -119,112 +284,96 @@ def parse_json_object(text: str | None) -> dict | None:
     return value if isinstance(value, dict) else None
 
 
-def analyze_attrition_with_gemini(employee_context: list[dict[str, Any]]) -> dict[str, Any] | None:
-    if not employee_context:
-        return {
-            "source": "Gemini",
-            "model": get_settings().gemini_model,
-            "counts": {"High": 0, "Medium": 0, "Low": 0},
-            "employees": [],
-            "insight": "No employee records were provided for attrition analysis.",
-        }
-
-    compact_context = [
-        {
-            "name": str(item.get("name") or "Unknown"),
-            "role": str(item.get("role") or "Team Member"),
-            "department": str(item.get("department") or item.get("dept") or "Unassigned"),
-            "status": str(item.get("status") or "Active"),
-            "performance": int(item.get("performance") or item.get("perf") or 0),
-            "attendance": int(item.get("attendance") or 0),
-            "sentiment": str(item.get("sentiment") or "Neutral"),
-            "sentiment_updates": int(item.get("sentiment_updates") or 0),
-            "task_status": str(item.get("task_status") or "Unknown"),
-            "career_gap": str(item.get("career_gap") or "None"),
-            "tenure_months": int(item.get("tenure_months") or 0),
-        }
-        for item in employee_context
-    ]
-    employee_names = {item["name"] for item in compact_context}
-    gemini_json = parse_json_object(
-        ask_gemini(
-            "You are PeoplePulse's HR attrition risk analyst. Analyze the provided employees only. "
-            "Use performance, attendance, daily sentiment, task completion, status, career gap, and tenure. "
-            "Return only valid JSON with this exact shape: "
-            '{"employees":[{"name":"Employee Name","risk":"High|Medium|Low","risk_score":0,'
-            '"reasons":["reason 1","reason 2"],"recommendation":"manager action"}],'
-            '"insight":"one concise workforce insight"}. '
-            "risk_score must be an integer 0-100. High means immediate retention action, Medium means monitor, Low means stable. "
-            "Do not invent employee names. Keep reasons short and explainable.\n\n"
-            f"Employee data:\n{json.dumps(compact_context, ensure_ascii=False)}",
-            temperature=0.15,
-        )
-    )
-    if not gemini_json or not isinstance(gemini_json.get("employees"), list):
-        return None
-
-    results: list[dict[str, Any]] = []
-    for item in gemini_json["employees"]:
-        if not isinstance(item, dict):
-            continue
-        name = str(item.get("name") or "")
-        if name not in employee_names:
-            continue
-        risk = str(item.get("risk") or "Low").title()
-        if risk not in {"High", "Medium", "Low"}:
-            risk = "Low"
-        try:
-            risk_score = max(0, min(100, int(item.get("risk_score", 0))))
-        except (TypeError, ValueError):
-            risk_score = {"High": 80, "Medium": 55, "Low": 20}[risk]
-        reasons = item.get("reasons") if isinstance(item.get("reasons"), list) else []
-        results.append(
-            {
-                "name": name,
-                "risk": risk,
-                "risk_score": risk_score,
-                "reasons": [str(reason)[:120] for reason in reasons[:3]],
-                "recommendation": str(item.get("recommendation") or "Schedule a manager check-in.")[:220],
-            }
-        )
-
-    by_name = {item["name"]: item for item in results}
-    for item in compact_context:
-        if item["name"] not in by_name:
-            by_name[item["name"]] = {
-                "name": item["name"],
-                "risk": "Low",
-                "risk_score": 20,
-                "reasons": ["Gemini did not flag this employee."],
-                "recommendation": "Continue normal manager check-ins.",
-            }
-
-    ordered = [by_name[item["name"]] for item in compact_context]
-    counts = {
-        "High": sum(1 for item in ordered if item["risk"] == "High"),
-        "Medium": sum(1 for item in ordered if item["risk"] == "Medium"),
-        "Low": sum(1 for item in ordered if item["risk"] == "Low"),
-    }
-    return {
-        "source": "Gemini",
-        "model": get_settings().gemini_model,
-        "counts": counts,
-        "employees": ordered,
-        "insight": str(gemini_json.get("insight") or "Gemini analyzed attrition risk from connected HR data.")[:300],
-    }
-
-
 def extract_skills(text: str) -> list[str]:
     lowered = text.lower()
     skills = set()
     for token, label in SKILL_ALIASES.items():
-        if " " in token:
+        if " " in token or not token.replace("+", "").replace("#", "").isalnum():
             matched = token in lowered
         else:
-            matched = re.search(rf"\b{re.escape(token)}\b", lowered) is not None
+            matched = re.search(rf"(?<![\w+#]){re.escape(token)}(?![\w+#])", lowered) is not None
         if matched:
             skills.add(label)
     return sorted(skills)
+
+
+def extract_resume_text(content: bytes, filename: str = "") -> str:
+    """Pull readable text out of an uploaded PDF, DOCX or plain-text resume."""
+    lower = (filename or "").lower()
+    try:
+        if content[:4] == b"%PDF" or lower.endswith(".pdf"):
+            return _pdf_text(content)
+        if content[:2] == b"PK" or lower.endswith(".docx"):
+            return _docx_text(content)
+    except Exception:
+        pass
+    return content.decode("utf-8", errors="ignore")
+
+
+def _pdf_text(content: bytes) -> str:
+    try:
+        import io
+
+        from pypdf import PdfReader
+
+        reader = PdfReader(io.BytesIO(content))
+        pages = [(page.extract_text() or "") for page in reader.pages]
+        text = "\n".join(pages).strip()
+        if text:
+            return text
+    except Exception:
+        pass
+    return _pdf_text_fallback(content)
+
+
+def _pdf_text_fallback(content: bytes) -> str:
+    import zlib
+
+    chunks: list[str] = []
+    for match in re.finditer(rb"stream\r?\n(.*?)endstream", content, flags=re.DOTALL):
+        raw = match.group(1).strip(b"\r\n")
+        data = raw
+        try:
+            data = zlib.decompress(raw)
+        except Exception:
+            try:
+                data = zlib.decompressobj().decompress(raw)
+            except Exception:
+                continue
+        for text in re.findall(rb"\((?:\\.|[^\\()])*\)", data):
+            cleaned = text[1:-1]
+            cleaned = re.sub(rb"\\([()\\])", rb"\1", cleaned)
+            chunks.append(cleaned.decode("latin-1", errors="ignore"))
+    return " ".join(chunks)
+
+
+def _docx_text(content: bytes) -> str:
+    import html
+    import io
+    import zipfile
+
+    with zipfile.ZipFile(io.BytesIO(content)) as archive:
+        xml = archive.read("word/document.xml").decode("utf-8", errors="ignore")
+    xml = re.sub(r"</w:p>", "\n", xml)
+    return html.unescape(re.sub(r"<[^>]+>", " ", xml))
+
+
+def resume_experience_years(text: str) -> int:
+    matches = [int(value) for value in re.findall(r"(\d{1,2})\+?\s*(?:years|yrs)", text.lower())]
+    return min(max(matches), 30) if matches else 0
+
+
+def resume_education(text: str) -> str:
+    lowered = text.lower()
+    for label, keys in (
+        ("PhD", ("ph.d", "phd", "doctorate")),
+        ("Master's degree", ("master", "m.tech", "mba", "m.sc", "ms in")),
+        ("Bachelor's degree", ("bachelor", "b.tech", "b.e.", "b.sc", "bs in", "bca", "b.com")),
+        ("Diploma", ("diploma", "associate degree")),
+    ):
+        if any(key in lowered for key in keys):
+            return label
+    return ""
 
 
 def score_candidate(job_description: str, candidate: Candidate) -> ResumeScreenResult:
@@ -233,8 +382,10 @@ def score_candidate(job_description: str, candidate: Candidate) -> ResumeScreenR
     matched = sorted(required & supplied)
     missing = sorted(required - supplied)
     coverage = len(matched) / max(len(required), 1)
-    experience_bonus = min(candidate.experience_years, 8) / 8
-    score = round((coverage * 72) + (experience_bonus * 20) + (8 if candidate.education else 0))
+    experience_bonus = min(max(candidate.experience_years, 0), 8) / 8
+    education = str(candidate.education or "").strip()
+    has_education = bool(education) and education.lower() not in {"not provided", "parsed from uploaded resume"}
+    score = round((coverage * 72) + (experience_bonus * 20) + (8 if has_education else 0))
 
     if score >= 85:
         recommendation = "Strong hire signal. Move to structured technical interview."
@@ -248,8 +399,16 @@ def score_candidate(job_description: str, candidate: Candidate) -> ResumeScreenR
         match_score=min(score, 98),
         skills_matched=matched,
         missing_skills=missing,
-        experience_analysis=f"{candidate.experience_years} years mapped against role seniority.",
-        education_analysis=f"{candidate.education} reviewed for baseline qualification.",
+        experience_analysis=(
+            f"{candidate.experience_years} years mapped against role seniority."
+            if candidate.experience_years
+            else "No total years of experience could be detected in this resume."
+        ),
+        education_analysis=(
+            f"{education} reviewed for baseline qualification."
+            if has_education
+            else "No formal education detail could be detected in this resume."
+        ),
         recommendation=recommendation,
     )
 

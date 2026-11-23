@@ -24,12 +24,15 @@ from backend.app.schemas import (
 from backend.app.services import admin_data
 from backend.app.core.config import get_settings
 from backend.app.services.ai import (
-    analyze_attrition_with_gemini,
     answer_hr_question,
     ask_gemini,
     evaluate_interview,
+    extract_resume_text,
+    extract_skills,
     gemini_enabled,
     gemini_last_error,
+    resume_education,
+    resume_experience_years,
     score_candidate,
 )
 
@@ -959,23 +962,17 @@ async def resume_upload(
     candidates: list[Candidate] = []
     for index, upload in enumerate(files, start=1):
         content = await upload.read()
-        text = content.decode("utf-8", errors="ignore")
         filename = upload.filename or f"Candidate {index}"
+        text = extract_resume_text(content, filename)
         name = filename.rsplit(".", 1)[0].replace("_", " ").replace("-", " ").title()
-        skills = [
-            skill
-            for skill in ["Python", "FastAPI", "PostgreSQL", "Docker", "Kubernetes", "REST APIs", "Microservices", "React", "SQL", "System Design"]
-            if skill.lower() in text.lower() or skill.lower() in filename.lower()
-        ]
-        if not skills:
-            skills = ["Python", "REST APIs", "Docker"] if index % 2 else ["PostgreSQL", "System Design"]
+        skills = extract_skills(f"{text}\n{filename}")
         candidates.append(
             Candidate(
                 name=name,
                 role="Uploaded Resume",
                 skills=skills,
-                experience_years=5 + (index % 4),
-                education="Parsed from uploaded resume",
+                experience_years=resume_experience_years(text),
+                education=resume_education(text),
             )
         )
     results = [score_candidate(job_description, candidate) for candidate in candidates]
@@ -995,20 +992,6 @@ def assistant(payload: AssistantRequest) -> AssistantResponse:
 @router.post("/ai/copilot", response_model=AssistantResponse)
 def aetherhr_ai_copilot(payload: AssistantRequest) -> AssistantResponse:
     return _run_copilot_response(payload)
-
-
-@router.post("/ai/attrition")
-def attrition_ai(payload: dict) -> dict:
-    if not gemini_enabled():
-        raise HTTPException(status_code=503, detail="GEMINI_API_KEY is missing from the real .env file.")
-    employees = payload.get("employees")
-    if not isinstance(employees, list):
-        raise HTTPException(status_code=400, detail="employees must be a list")
-    result = analyze_attrition_with_gemini(employees)
-    if result is None:
-        detail = gemini_last_error() or "Gemini attrition analysis failed. Check the API key, model, or network access."
-        raise HTTPException(status_code=503, detail=detail)
-    return result
 
 
 @router.get("/ai/status")

@@ -304,8 +304,6 @@ tr:hover td{background:var(--surface2)}
             <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-file-search" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Screening</div></div></div>
             <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-microphone-2" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Interview</div></div></div>
             <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-message-chatbot" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">HR</div><div class="login-preview-label">Chatbot</div></div></div>
-            <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-mood-smile" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Sentiment</div></div></div>
-            <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-shield-check" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Attrition</div></div></div>
             <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-trending-up" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Career</div></div></div>
             <div class="login-preview-card"><div class="login-preview-icon"><i class="ti ti-target-arrow" aria-hidden="true"></i></div><div class="login-preview-copy"><div class="login-preview-value">AI</div><div class="login-preview-label">Match Score</div></div></div>
           </div>
@@ -364,14 +362,14 @@ const ROLES = {
     {section:'Overview',items:[{icon:'ti-layout-dashboard',label:'Dashboard',page:'adminDash'},{icon:'ti-chart-bar',label:'Analytics',page:'analytics'}]},
     {section:'Workforce',items:[{icon:'ti-users',label:'Employees',page:'employees'},{icon:'ti-building',label:'Departments',page:'departments'}]},
     {section:'Operations',items:[{icon:'ti-calendar-check',label:'Attendance',page:'attendance'},{icon:'ti-calendar',label:'Leave',page:'leave'},{icon:'ti-report-money',label:'Payroll',page:'payroll'}]},
-    {section:'AI Features',items:[{icon:'ti-brain',label:'AI Recruitment',page:'airecruit'},{icon:'ti-message-chatbot',label:'HR Chatbot',page:'chatbot'},{icon:'ti-activity',label:'Sentiment AI',page:'sentiment'},{icon:'ti-shield-check',label:'Attrition AI',page:'attrition'},{icon:'ti-trending-up',label:'Career AI',page:'career'}]},
+    {section:'AI Features',items:[{icon:'ti-brain',label:'AI Recruitment',page:'airecruit'},{icon:'ti-message-chatbot',label:'HR Chatbot',page:'chatbot'},{icon:'ti-trending-up',label:'Career AI',page:'career'}]},
     {section:'Performance',items:[{icon:'ti-target',label:'Performance',page:'performance'}]},
     {section:'Platform',items:[{icon:'ti-stack-2',label:'Architecture',page:'architecture'}]},
   ]},
   manager:{label:'Senior Manager',avatar:'SM',nav:[
     {section:'Overview',items:[{icon:'ti-layout-dashboard',label:'Dashboard',page:'managerDash'}]},
     {section:'Team',items:[{icon:'ti-users',label:'My Team',page:'employees'},{icon:'ti-calendar-check',label:'Attendance',page:'attendance'},{icon:'ti-calendar',label:'Leave Approvals',page:'leave'},{icon:'ti-target',label:'Performance',page:'performance'}]},
-    {section:'AI Tools',items:[{icon:'ti-activity',label:'Team Sentiment',page:'sentiment'},{icon:'ti-shield-check',label:'Attrition Risk',page:'attrition'},{icon:'ti-message-chatbot',label:'HR Chatbot',page:'chatbot'}]},
+    {section:'AI Tools',items:[{icon:'ti-message-chatbot',label:'HR Chatbot',page:'chatbot'}]},
   ]},
   recruiter:{label:'HR Recruiter',avatar:'HR',nav:[
     {section:'Overview',items:[{icon:'ti-layout-dashboard',label:'Dashboard',page:'recruiterDash'}]},
@@ -642,7 +640,7 @@ async function showPage(page){
     await syncInternalApplications();
   }
   renderNav(currentRole);
-  const titles={adminDash:'Overview',managerDash:'Team Overview',recruiterDash:'Recruitment Hub',empDash:'My Dashboard',employees:'Employee Directory',departments:'Departments',attendance:'Attendance',leave:'Leave Management',payroll:'Payroll',performance:'Performance',analytics:'Analytics',airecruit:'AI Resume Screening',aiinterview:'AI Voice Interview',chatbot:'HR AI Assistant',sentiment:'Employee Sentiment',attrition:'Attrition Prediction',career:'Career Growth AI',careerOpportunities:'Career Opportunities',myApplications:'My Applications',jobs:'Job Postings',candidates:'Candidates',profile:'My Profile',architecture:'Architecture'};
+  const titles={adminDash:'Overview',managerDash:'Team Overview',recruiterDash:'Recruitment Hub',empDash:'My Dashboard',employees:'Employee Directory',departments:'Departments',attendance:'Attendance',leave:'Leave Management',payroll:'Payroll',performance:'Performance',analytics:'Analytics',airecruit:'AI Resume Screening',aiinterview:'AI Voice Interview',chatbot:'HR AI Assistant',career:'Career Growth AI',careerOpportunities:'Career Opportunities',myApplications:'My Applications',jobs:'Job Postings',candidates:'Candidates',profile:'My Profile',architecture:'Architecture'};
   document.getElementById('pageTitle').textContent=currentRole==='recruiter'&&page==='aiinterview'?'AI Voice Interview Report':(titles[page]||page);
   const content=document.getElementById('mainContent');
   const pages={
@@ -650,8 +648,8 @@ async function showPage(page){
     empDash:renderEmpDash,employees:renderEmployees,departments:renderDepartments,
     attendance:renderAttendance,leave:renderLeave,payroll:renderPayroll,
     performance:renderPerformance,analytics:renderAnalytics,airecruit:renderAIRecruit,
-    aiinterview:renderAIInterview,chatbot:renderChatbot,sentiment:renderSentiment,
-    attrition:renderAttrition,career:renderCareer,careerOpportunities:renderCareerOpportunities,myApplications:renderMyApplications,jobs:renderJobs,candidates:renderCandidates,profile:renderProfile,architecture:renderArchitecture
+    aiinterview:renderAIInterview,chatbot:renderChatbot,
+    career:renderCareer,careerOpportunities:renderCareerOpportunities,myApplications:renderMyApplications,jobs:renderJobs,candidates:renderCandidates,profile:renderProfile,architecture:renderArchitecture
   };
   if(pages[page]){
     const rendered=pages[page](content);
@@ -1434,13 +1432,12 @@ function currentLeaveRequester(){
 }
 async function loadLeaveRequests(){
   try{
-    if(currentRole==='manager'){
-      sharedLeaveRequests=await apiGet('/api/leave/requests');
-    }else{
-      const requester=currentLeaveRequester();
-      sharedLeaveRequests=await apiGet(`/api/leave/requests?requester_role=${encodeURIComponent(requester.role)}`);
+    const requester=currentLeaveRequester();
+    sharedLeaveRequests=await apiGet('/api/leave/requests');
+    if(currentRole==='employee'){
+      sharedLeaveRequests=sharedLeaveRequests.filter(r=>normalizeName(r.requester_name)===normalizeName(requester.name));
     }
-    const pendingSource=currentRole==='manager'?sharedLeaveRequests:await apiGet('/api/leave/requests?status=Pending%20Approval');
+    const pendingSource=currentRole==='employee'?sharedLeaveRequests:await apiGet('/api/leave/requests?status=Pending%20Approval');
     leavePendingCount=pendingSource.filter(r=>r.status==='Pending Approval').length;
   }catch(err){
     sharedLeaveRequests=[];
@@ -1448,8 +1445,12 @@ async function loadLeaveRequests(){
   }
 }
 function getLeaveBalances(){
+  const requester=currentLeaveRequester();
+  const ownRequests=currentRole==='manager'
+    ?sharedLeaveRequests
+    :sharedLeaveRequests.filter(r=>normalizeName(r.requester_name)===normalizeName(requester.name));
   return leaveEntitlements.map(item=>{
-    const used=sharedLeaveRequests
+    const used=ownRequests
       .filter(r=>r.status==='Approved'&&r.leave_type===item.t)
       .reduce((sum,r)=>sum+Number(r.days||0),0);
     return {...item,u:used,r:Math.max(item.total-used,0)};
@@ -1467,11 +1468,12 @@ function renderLeaveHistory(){
     if(!list)return;
     ownsHeader=true;
   }
-  const backendRows=sharedLeaveRequests.map(r=>({t:r.leave_type,d:leaveDisplayRange(r),days:r.days,s:r.status,response:r.manager_response}));
+  const backendRows=sharedLeaveRequests.map(r=>({t:r.leave_type,d:leaveDisplayRange(r),days:r.days,s:r.status,response:r.manager_response,name:r.requester_name}));
   const rows=backendRows;
+  const showRequester=currentRole!=='employee';
   const historyHtml=rows.length?rows.map(l=>`<div class="leave-card">
     <div style="display:flex;justify-content:space-between">
-      <div><div style="font-weight:500;font-size:13px">${escapeHtml(l.t)}</div><div style="font-size:11px;color:var(--text3)">${escapeHtml(l.d)} &middot; ${l.days} day${l.days>1?'s':''}</div></div>
+      <div><div style="font-weight:500;font-size:13px">${escapeHtml(l.t)}</div><div style="font-size:11px;color:var(--text3)">${showRequester?escapeHtml(l.name)+' &middot; ':''}${escapeHtml(l.d)} &middot; ${l.days} day${l.days>1?'s':''}</div></div>
       <span class="badge ${l.s==='Approved'?'badge-green':l.s==='Rejected'?'badge-red':'badge-amber'}">${escapeHtml(l.s)}</span>
     </div>
     ${l.response?`<div style="font-size:11px;color:var(--text3);margin-top:6px">Manager response: ${escapeHtml(l.response)}</div>`:''}
@@ -2067,10 +2069,20 @@ function renderAnalytics(el){
 const screeningJdTemplates={
   'Senior Backend Engineer':'Python, FastAPI, PostgreSQL, Docker, Kubernetes, REST APIs, 5+ years experience, microservices, system design, authentication, cloud deployment',
   'Frontend Developer':'React, JavaScript, TypeScript, HTML, CSS, responsive UI, accessibility, API integration, component design, performance optimization',
+  'Full Stack Developer':'React, Node.js, JavaScript, TypeScript, REST APIs, SQL, PostgreSQL, Docker, HTML, CSS, API integration, system design, CI/CD',
+  'Mobile App Developer':'React Native, Flutter, Android, iOS, Kotlin, Swift, JavaScript, REST APIs, UI design, performance optimization, accessibility',
   'Data Scientist':'Python, SQL, machine learning, statistics, data visualization, predictive modeling, pandas, scikit-learn, business insights, experimentation',
+  'Data Engineer':'Python, SQL, ETL, data pipelines, Airflow, Spark, Snowflake, BigQuery, AWS, Docker, data modeling, Kafka',
+  'Machine Learning Engineer':'Python, machine learning, deep learning, PyTorch, TensorFlow, scikit-learn, pandas, NumPy, NLP, statistics, predictive modeling, AWS',
   'DevOps Engineer':'Docker, Kubernetes, CI/CD, AWS, Linux, monitoring, Terraform, deployment automation, incident response, security, scalability',
+  'QA Automation Engineer':'automation testing, Selenium, Cypress, Playwright, test cases, manual testing, API integration, Postman, CI/CD, JavaScript, Python',
+  'Cybersecurity Engineer':'security, authentication, authorization, OAuth, JWT, Linux, monitoring, incident response, observability, AWS, compliance',
   'Product Manager':'Product strategy, roadmap planning, user research, analytics, stakeholder management, agile delivery, prioritization, PRD writing, go-to-market',
-  'Product Designer':'UX research, UI design, Figma, wireframing, prototyping, design systems, accessibility, user testing, product thinking, interaction design'
+  'Product Designer':'UX research, UI design, Figma, wireframing, prototyping, design systems, accessibility, user testing, product thinking, interaction design',
+  'Business Analyst':'business analysis, requirements gathering, SQL, Excel, analytics, data visualization, stakeholder management, agile, Jira, communication',
+  'HR Business Partner':'HR operations, recruitment, onboarding, payroll, compliance, stakeholder management, communication, analytics, Excel, leadership',
+  'Sales Executive':'CRM, Salesforce, pipeline management, negotiation, communication, account management, HubSpot, forecasting, analytics',
+  'Customer Success Manager':'customer success, account management, CRM, communication, analytics, onboarding, stakeholder management, Salesforce'
 };
 
 function updateScreeningJD(){
@@ -2085,7 +2097,7 @@ function renderAIRecruit(el){
   <div class="card-header"><div class="card-title">AI Resume Screening</div><span class="ai-chip"><span class="pulse"></span>Gemini AI Powered</span></div>
   <div class="grid2" style="gap:16px">
     <div>
-      <div class="form-group"><label class="form-label">Job Position</label><select class="form-input" id="screeningRoleInput" onchange="updateScreeningJD()"><option>Senior Backend Engineer</option><option>Frontend Developer</option><option>Data Scientist</option><option>DevOps Engineer</option><option>Product Manager</option><option>Product Designer</option></select></div>
+      <div class="form-group"><label class="form-label">Job Position</label><select class="form-input" id="screeningRoleInput" onchange="updateScreeningJD()">${Object.keys(screeningJdTemplates).map(role=>`<option>${escapeHtml(role)}</option>`).join('')}</select></div>
       <div class="form-group"><label class="form-label">Job Description Keywords</label><textarea class="form-input" rows="4" id="jdInput">Python, FastAPI, PostgreSQL, Docker, Kubernetes, REST APIs, 5+ years experience, microservices, system design</textarea></div>
       <input id="resumeUploadInput" type="file" multiple accept=".pdf,.txt,.doc,.docx" style="display:none" onchange="handleResumeFiles(this.files)">
       <div id="resumeDropZone" style="border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;margin-bottom:8px;color:var(--text3)" onclick="document.getElementById('resumeUploadInput').click()">
@@ -2301,101 +2313,6 @@ function sendChat(){
     msgs.innerHTML+=`<div class="chat-msg bot"><div class="chat-sender">PeoplePulse AI</div><div class="chat-bubble">${botReplies[key]}</div></div>`;
     msgs.scrollTop=msgs.scrollHeight;
   },1200);
-}
-
-function renderSentiment(el){
-  el.innerHTML=`
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header"><div class="card-title">Employee Sentiment Analysis</div><span class="ai-chip"><span class="pulse"></span>AI Powered</span></div>
-  <div class="grid3">
-    <div style="text-align:center;padding:16px;background:var(--green-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#15803D">67%</div>
-      <div style="font-size:13px;color:#15803D;font-weight:500">Positive</div>
-      <div style="font-size:11px;color:#16A34A;margin-top:2px">3,264 employees</div>
-    </div>
-    <div style="text-align:center;padding:16px;background:var(--amber-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#92400E">22%</div>
-      <div style="font-size:13px;color:#92400E;font-weight:500">Neutral</div>
-      <div style="font-size:11px;color:#D97706;margin-top:2px">1,072 employees</div>
-    </div>
-    <div style="text-align:center;padding:16px;background:var(--red-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#B91C1C">11%</div>
-      <div style="font-size:13px;color:#B91C1C;font-weight:500">Negative</div>
-      <div style="font-size:11px;color:#DC2626;margin-top:2px">536 employees</div>
-    </div>
-  </div>
-</div>
-<div class="grid2">
-  <div class="card">
-    <div class="card-header"><div class="card-title">Sentiment Trend</div></div>
-    <div style="position:relative;height:200px"><canvas id="sentChart" role="img" aria-label="Sentiment trend line chart">Monthly positive sentiment percentage trend</canvas></div>
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">Department Breakdown</div></div>
-    ${[
-      {dept:'Design',pos:80,neg:5,trend:'up'},
-      {dept:'Engineering',pos:72,neg:8,trend:'stable'},
-      {dept:'Analytics',pos:78,neg:4,trend:'up'},
-      {dept:'Product',pos:65,neg:10,trend:'down'},
-      {dept:'Sales',pos:55,neg:23,trend:'down'},
-    ].map(d=>`<div class="stat-row">
-      <div class="stat-name">${d.dept}</div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:80px"><div class="sentiment-bar"><div style="width:${d.pos}%;background:#16A34A"></div><div style="width:${100-d.pos-d.neg}%;background:#D97706"></div><div style="width:${d.neg}%;background:#DC2626"></div></div></div>
-        <span style="font-size:12px;font-weight:500;color:${d.pos>70?'var(--green)':'var(--amber)'}">${d.pos}%</span>
-        <i class="ti ti-arrow-${d.trend==='up'?'up-right':d.trend==='down'?'down-right':'right'}" style="color:${d.trend==='up'?'var(--green)':d.trend==='down'?'var(--red)':'var(--text3)'}" aria-hidden="true"></i>
-      </div>
-    </div>`).join('')}
-  </div>
-</div>`;
-  setTimeout(()=>{
-    const sc=document.getElementById('sentChart');
-    if(sc)chartInstances.sent=new Chart(sc,{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Positive',data:[61,63,62,65,64,67],borderColor:'#16A34A',backgroundColor:'#16A34A18',fill:true,tension:0.4,pointRadius:3},{label:'Negative',data:[15,13,14,12,13,11],borderColor:'#DC2626',tension:0.4,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{font:{size:10},callback:v=>v+'%'}},x:{ticks:{font:{size:10}}}}}});
-  },100);
-}
-
-function renderAttrition(el){
-  el.innerHTML=`
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header"><div class="card-title">AI Attrition Prediction</div><span class="ai-chip"><span class="pulse"></span>ML Powered</span></div>
-  <div class="grid3">
-    <div style="padding:14px;background:var(--red-soft);border-radius:10px;border-left:3px solid var(--red)">
-      <div style="font-size:11px;font-weight:600;color:#B91C1C;text-transform:uppercase;letter-spacing:0.4px">High Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--red)">124</div>
-      <div style="font-size:11px;color:#B91C1C">Immediate action needed</div>
-    </div>
-    <div style="padding:14px;background:var(--amber-soft);border-radius:10px;border-left:3px solid var(--amber)">
-      <div style="font-size:11px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:0.4px">Medium Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--amber)">387</div>
-      <div style="font-size:11px;color:#92400E">Monitor closely</div>
-    </div>
-    <div style="padding:14px;background:var(--green-soft);border-radius:10px;border-left:3px solid var(--green)">
-      <div style="font-size:11px;font-weight:600;color:#15803D;text-transform:uppercase;letter-spacing:0.4px">Low Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--green)">4,361</div>
-      <div style="font-size:11px;color:#15803D">Stable workforce</div>
-    </div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header"><div class="card-title">High Risk Employees — AI Analysis</div></div>
-  ${employees.filter(e=>e.attrition!=='Low').map(e=>`<div class="attrition-item">
-    <div class="emp-avatar" style="background:${e.color}20;color:${e.color}">${e.avatar}</div>
-    <div style="flex:1">
-      <div style="font-size:13px;font-weight:500;color:var(--text)">${e.name}</div>
-      <div style="font-size:11px;color:var(--text3)">${e.role} · ${e.dept}</div>
-      <div style="display:flex;gap:10px;margin-top:4px;font-size:11px;color:var(--text3)">
-        ${e.attrition==='High'?'<span>⚠ Low attendance</span><span>⚠ Declined engagement</span><span>⚠ Stagnant growth</span>':'<span>📉 Moderate disengagement</span><span>📋 Missed 2 goals</span>'}
-      </div>
-    </div>
-    <div style="text-align:right">
-      <span class="badge ${e.attrition==='High'?'badge-red':'badge-amber'}">${e.attrition} Risk</span>
-      <div style="margin-top:6px"><button class="btn btn-sm" onclick="runBackendAction('coaching.schedule','Schedule 1:1',{employee:'${r.n}'},this)">Schedule 1:1</button></div>
-    </div>
-  </div>`).join('')}
-  <div style="padding:12px;background:var(--purple-soft);border-radius:8px;margin-top:12px;font-size:12px;color:var(--text2);line-height:1.6">
-    <strong style="color:#5B21B6">AI Insight:</strong> The Sales department shows a 23% negative sentiment trend correlating with 3.2x higher attrition risk. Consider compensation review and career pathing initiatives.
-  </div>
-</div>`;
 }
 
 function renderCareer(el){
@@ -3273,7 +3190,7 @@ async function sendChat(){
 
 function renderArchitecture(el){
   const audit=[
-    {t:'Current code audit',d:'Original single-file SPA preserved. Existing pages cover dashboards, workforce ops, ATS, resume screening, interview, assistant, sentiment, attrition, and career recommendations.',c:'var(--accent)',i:'ti-search'},
+    {t:'Current code audit',d:'Original single-file SPA preserved. Existing pages cover dashboards, workforce ops, ATS, resume screening, interview, assistant, and career recommendations.',c:'var(--accent)',i:'ti-search'},
     {t:'Missing backend closed',d:'FastAPI endpoints now serve dashboard summary, AI resume scoring, AI interview scoring, and HR assistant responses with deterministic fallbacks.',c:'var(--green)',i:'ti-api'},
     {t:'AI integration path',d:'Service layer is ready for Gemini prompts, sentence-transformer matching, PDF parsing, and Whisper transcription without changing the UI contract.',c:'var(--purple)',i:'ti-brain'},
     {t:'Scale posture',d:'Docker Compose includes PostgreSQL and the API layout is split into routes, schemas, services, and core config for modular growth.',c:'var(--teal)',i:'ti-database'}
@@ -3615,35 +3532,6 @@ ${balanceCards}
   </div>
 </div>`;
   renderLeaveHistory();
-}
-
-async function renderAttrition(el){
-  el.innerHTML='<div class="loading-ai"><div class="dot-anim"><span></span><span></span><span></span></div>Loading attrition risk from employee records...</div>';
-  try{await loadAdminRecords();}catch(err){}
-  const sourceEmployees=adminEmployees.length?adminEmployees:employees;
-  const total=sourceEmployees.length||1;
-  const high=sourceEmployees.filter(e=>e.attrition==='High').length;
-  const medium=sourceEmployees.filter(e=>e.attrition==='Medium').length;
-  const low=sourceEmployees.filter(e=>e.attrition==='Low').length;
-  const flagged=sourceEmployees.filter(e=>e.attrition!=='Low');
-  el.innerHTML=`
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header"><div class="card-title">AI Attrition Prediction</div><span class="ai-chip"><span class="pulse"></span>Database Driven</span></div>
-  <div class="grid3">
-    <div style="padding:14px;background:var(--red-soft);border-radius:10px;border-left:3px solid var(--red)"><div style="font-size:11px;font-weight:600;color:#B91C1C;text-transform:uppercase;letter-spacing:0.4px">High Risk</div><div style="font-size:32px;font-weight:700;color:var(--red)">${high}</div><div style="font-size:11px;color:#B91C1C">Immediate action needed</div></div>
-    <div style="padding:14px;background:var(--amber-soft);border-radius:10px;border-left:3px solid var(--amber)"><div style="font-size:11px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:0.4px">Medium Risk</div><div style="font-size:32px;font-weight:700;color:var(--amber)">${medium}</div><div style="font-size:11px;color:#92400E">Monitor closely</div></div>
-    <div style="padding:14px;background:var(--green-soft);border-radius:10px;border-left:3px solid var(--green)"><div style="font-size:11px;font-weight:600;color:#15803D;text-transform:uppercase;letter-spacing:0.4px">Low Risk</div><div style="font-size:32px;font-weight:700;color:var(--green)">${low}</div><div style="font-size:11px;color:#15803D">Stable workforce</div></div>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header"><div class="card-title">High Risk Employees - AI Analysis</div></div>
-  ${flagged.map(e=>`<div class="attrition-item">
-    <div class="emp-avatar" style="background:${e.color}20;color:${e.color}">${escapeHtml(e.avatar)}</div>
-    <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text)">${escapeHtml(e.name)}</div><div style="font-size:11px;color:var(--text3)">${escapeHtml(e.role)} · ${escapeHtml(e.dept)}</div><div style="display:flex;gap:10px;margin-top:4px;font-size:11px;color:var(--text3)"><span>${e.attrition==='High'?'Low attendance':'Moderate disengagement'}</span><span>${e.attrition==='High'?'Declined engagement':'Missed 2 goals'}</span></div></div>
-    <div style="text-align:right"><span class="badge ${e.attrition==='High'?'badge-red':'badge-amber'}">${escapeHtml(e.attrition)} Risk</span><div style="margin-top:6px"><button class="btn btn-sm" onclick="runBackendAction('coaching.schedule','Schedule 1:1',{employee:'${escapeHtml(e.name)}'},this)">Schedule 1:1</button></div></div>
-  </div>`).join('')||'<div style="font-size:12px;color:var(--text3)">No medium or high attrition risk employees.</div>'}
-  <div style="padding:12px;background:var(--purple-soft);border-radius:8px;margin-top:12px;font-size:12px;color:var(--text2);line-height:1.6"><strong style="color:#5B21B6">AI Insight:</strong> ${Math.round((high+medium)/total*100)}% of employees are currently medium or high risk. Prioritize manager check-ins and career pathing for flagged employees.</div>
-</div>`;
 }
 
 function renderCareer(el){
@@ -4568,7 +4456,9 @@ function getEmployeePerformanceBreakdown(employee){
   const task=employeeTaskScore(employee);
   const sentiment=employeeSentimentScore(employee);
   const score=Math.round((attendance*0.40)+(task*0.35)+(sentiment*0.25));
-  return {score,attendance,task,sentiment,hasTodayUpdate};
+  const baseline=Math.max(0,Math.min(100,Math.round(Number(employee?.perf||0))));
+  if(!score&&baseline)return {score:baseline,attendance,task,sentiment,hasTodayUpdate,baseline:true};
+  return {score,attendance,task,sentiment,hasTodayUpdate,baseline:false};
 }
 
 function getEmployeePerformanceScore(employee){
@@ -4624,7 +4514,7 @@ function saveDailyUpdate(event){
   const adminIndex=adminEmployees.findIndex(e=>String(e.id)===String(employee.id));
   if(adminIndex>=0)adminEmployees[adminIndex]={...adminEmployees[adminIndex],perf:newScore};
   showPage('empDash');
-  showActionNotice('Daily update saved and sent to Sentiment AI.');
+  showActionNotice('Daily update saved and sent to Performance AI.');
 }
 
 function renderEmpDash(el){
@@ -4685,9 +4575,9 @@ function renderEmpDash(el){
   <div class="card-header">
     <div>
       <div class="card-title">Daily Work Update</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:3px">Your update feeds Management Admin Sentiment AI in real time.</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">Your update feeds Management Admin performance and career AI in real time.</div>
     </div>
-    <span class="ai-chip"><span class="pulse"></span>Sentiment AI</span>
+    <span class="ai-chip"><span class="pulse"></span>Performance AI</span>
   </div>
   <form id="dailyUpdateForm" onsubmit="saveDailyUpdate(event)">
     <div class="grid2" style="gap:12px;margin-bottom:0">
@@ -4720,74 +4610,6 @@ function renderEmpDash(el){
     </div>
     <div style="font-size:13px;color:var(--text);margin-top:6px">${escapeHtml(latest.tasks)}</div>
   </div>`:''}
-</div>`;
-}
-
-function renderSentiment(el){
-  const updates=loadDailyUpdates()
-    .map(u=>({...u,sentiment:analyzeDailySentiment((u.tasks||'')+' '+(u.notes||'')).label}))
-    .sort((a,b)=>String(b.created_at).localeCompare(String(a.created_at)));
-  const total=updates.length;
-  const counts={Positive:0,Neutral:0,Negative:0};
-  updates.forEach(u=>{counts[u.sentiment]=Number(counts[u.sentiment]||0)+1;});
-  const pct=label=>total?Math.round((counts[label]||0)/total*100):0;
-  const departments=[...new Set(updates.map(u=>u.dept||'Unassigned'))].map(dept=>{
-    const rows=updates.filter(u=>(u.dept||'Unassigned')===dept);
-    const pos=rows.filter(u=>u.sentiment==='Positive').length;
-    const neu=rows.filter(u=>u.sentiment==='Neutral').length;
-    const neg=rows.filter(u=>u.sentiment==='Negative').length;
-    return {dept,count:rows.length,pos:rows.length?Math.round(pos/rows.length*100):0,neu:rows.length?Math.round(neu/rows.length*100):0,neg:rows.length?Math.round(neg/rows.length*100):0};
-  }).sort((a,b)=>b.count-a.count||b.pos-a.pos);
-  const recent=updates.slice(0,8);
-  el.innerHTML=`
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header"><div class="card-title">Employee Sentiment Analysis</div><span class="ai-chip"><span class="pulse"></span>Live Employee Updates</span></div>
-  <div class="grid3">
-    <div style="text-align:center;padding:16px;background:var(--green-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#15803D">${pct('Positive')}%</div>
-      <div style="font-size:13px;color:#15803D;font-weight:500">Positive</div>
-      <div style="font-size:11px;color:#16A34A;margin-top:2px">${counts.Positive||0} update${counts.Positive===1?'':'s'}</div>
-    </div>
-    <div style="text-align:center;padding:16px;background:var(--amber-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#92400E">${pct('Neutral')}%</div>
-      <div style="font-size:13px;color:#92400E;font-weight:500">Neutral</div>
-      <div style="font-size:11px;color:#D97706;margin-top:2px">${counts.Neutral||0} update${counts.Neutral===1?'':'s'}</div>
-    </div>
-    <div style="text-align:center;padding:16px;background:var(--red-soft);border-radius:10px">
-      <div style="font-size:32px;font-weight:700;color:#B91C1C">${pct('Negative')}%</div>
-      <div style="font-size:13px;color:#B91C1C;font-weight:500">Negative</div>
-      <div style="font-size:11px;color:#DC2626;margin-top:2px">${counts.Negative||0} update${counts.Negative===1?'':'s'}</div>
-    </div>
-  </div>
-</div>
-<div class="grid2">
-  <div class="card">
-    <div class="card-header"><div class="card-title">Recent Employee Updates</div><span class="badge ${total?'badge-blue':'badge-gray'}">${total}</span></div>
-    ${recent.map(u=>`<div class="leave-card">
-      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
-        <div>
-          <div style="font-weight:600">${escapeHtml(u.employee)}</div>
-          <div style="font-size:12px;color:var(--text3)">${escapeHtml(u.dept||'Unassigned')} · ${escapeHtml(u.date)}</div>
-        </div>
-        <span class="badge ${analyzeDailySentiment((u.tasks||'')+' '+(u.notes||'')).badge}">${escapeHtml(u.sentiment)}</span>
-      </div>
-      <div style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.5">${escapeHtml(u.tasks)}</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:6px">${escapeHtml(u.notes)}</div>
-    </div>`).join('')||'<div style="font-size:13px;color:var(--text3);padding:12px;background:var(--surface2);border-radius:8px">No employee daily updates yet. Once an employee submits todays tasks, this page will update automatically.</div>'}
-  </div>
-  <div class="card">
-    <div class="card-header"><div class="card-title">Department Breakdown</div><span class="badge badge-gray">${departments.length}</span></div>
-    ${departments.map(d=>`<div class="stat-row">
-      <div>
-        <div class="stat-name">${escapeHtml(d.dept)}</div>
-        <div style="font-size:11px;color:var(--text3)">${d.count} update${d.count===1?'':'s'}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;min-width:150px;justify-content:flex-end">
-        <div style="width:92px"><div class="sentiment-bar"><div style="width:${d.pos}%;background:#16A34A"></div><div style="width:${d.neu}%;background:#D97706"></div><div style="width:${d.neg}%;background:#DC2626"></div></div></div>
-        <span style="font-size:12px;font-weight:500;color:${d.pos>=d.neg?'var(--green)':'var(--red)'}">${d.pos}%</span>
-      </div>
-    </div>`).join('')||'<div style="font-size:13px;color:var(--text3);padding:12px;background:var(--surface2);border-radius:8px">No department sentiment data yet.</div>'}
-  </div>
 </div>`;
 }
 
@@ -4899,7 +4721,7 @@ function employeeCareerGaps(employee){
   const live=getEmployeePerformanceBreakdown(employee);
   const stored=Number(employee?.perf||employee?.performance||0);
   const hasLiveSignals=live.attendance>0||live.hasTodayUpdate;
-  const perf=hasLiveSignals?live.score:Math.round(stored*0.35);
+  const perf=hasLiveSignals?live.score:Math.max(0,Math.round(stored));
   const career=careerTemplateForEmployee(employee);
   return career.skills.map((skill,index)=>{
     const have=Math.min(96,Math.max(0,perf-(index*6)+(index===0?4:0)));
@@ -4915,12 +4737,13 @@ function employeeCareerForecast(employee){
   const skillScore=gaps.length?Math.round(gaps.reduce((sum,g)=>sum+Math.min(100,(g.have/g.need)*100),0)/gaps.length):70;
   const live=getEmployeePerformanceBreakdown(employee);
   const historicalPerf=Number(employee?.perf||employee?.performance||0);
-  const basePerf=live.score;
+  const hasLiveSignals=live.attendance>0||live.hasTodayUpdate;
+  const basePerf=hasLiveSignals?live.score:historicalPerf;
   const exp=employeeExperienceScore(employee);
   const attendanceSignal=live.attendance||0;
   const taskSignal=live.hasTodayUpdate?live.task:0;
   const sentimentSignal=live.hasTodayUpdate?live.sentiment:0;
-  const dataCompleteness=Math.round(((attendanceSignal>0?1:0)+(live.hasTodayUpdate?2:0))/3*100);
+  const dataCompleteness=Math.round(((attendanceSignal>0?1:0)+(live.hasTodayUpdate?1:0)+(historicalPerf>0?1:0))/3*100);
   const risk=String(employee?.attrition||'Low');
   const riskPenalty=risk==='High'?14:risk==='Medium'?7:0;
   const readiness=Math.max(0,Math.min(98,Math.round(
@@ -4930,8 +4753,8 @@ function employeeCareerForecast(employee){
     40+(dataCompleteness*0.35)+(skillScore*0.12)+(exp.score*0.08)
   )));
   const nextRole=career.path.split('→').map(p=>p.trim())[1]||`Senior ${employee?.role||'Team Member'}`;
-  const horizon=dataCompleteness<40?'Needs today\'s data first':readiness>=85?'6-12 months':readiness>=70?'12-18 months':readiness>=50?'18-24 months':'Needs a 90-day foundation plan';
-  const forecast=dataCompleteness<40
+  const horizon=dataCompleteness<34?'Needs today\'s data first':readiness>=85?'6-12 months':readiness>=70?'12-18 months':readiness>=50?'18-24 months':'Needs a 90-day foundation plan';
+  const forecast=dataCompleteness<34
     ? `Prediction pending for ${nextRole}`
     : readiness>=85
     ? `Strong future growth toward ${nextRole}`
@@ -4940,7 +4763,7 @@ function employeeCareerForecast(employee){
       : readiness>=50
         ? `Skill-building needed before ${nextRole}`
         : `Foundation stage before moving toward ${nextRole}`;
-  const action=dataCompleteness<40
+  const action=dataCompleteness<34
     ? 'Clock in with valid hours and submit today\'s task/sentiment update to unlock a reliable forecast'
     : readiness>=85
     ? 'Prepare promotion case and assign stretch ownership'
@@ -5484,7 +5307,7 @@ async function renderAnalytics(el){
         ${highRiskNames.map(name=>`<div>${escapeHtml(name)}</div>`).join('')}
       </div>
     </details>
-    <button class="btn btn-sm" style="margin-top:8px" onclick="showPage('attrition')">Open Attrition AI</button>`:''}
+    `:''}
   </div>
 </div>
 <div class="grid2">
@@ -5598,7 +5421,13 @@ function employeeAttritionProfile(employee){
   const status=effectiveEmployeeStatus(employee);
   if(status!=='Active'){score+=8;reasons.push(`Current status: ${status}`);}
 
-  const risk=score>=70?'High':score>=40?'Medium':'Low';
+  let risk=score>=70?'High':score>=40?'Medium':'Low';
+  const storedRisk=String(employee?.attrition||'').trim();
+  const hasLiveSignal=attendanceMetrics.records>0||sentiment.count>0;
+  if(!hasLiveSignal&&['High','Medium','Low'].includes(storedRisk)){
+    risk=storedRisk;
+    reasons.unshift('Directory risk baseline - no live attendance or daily updates yet');
+  }
   if(!reasons.length)reasons.push('Stable performance, attendance, and sentiment');
   const recommendation=risk==='High'
     ? 'Schedule an immediate 1:1, review attendance pattern, workload, and career support.'
@@ -5606,139 +5435,6 @@ function employeeAttritionProfile(employee){
       ? 'Set a manager check-in and track attendance, daily updates, and skill progress this week.'
       : 'Continue normal check-ins and keep monitoring live attendance and sentiment.';
   return {employee,attendance,attendanceMetrics,sentiment,perf,biggestGap,score:Math.min(100,score),risk,reasons,recommendation};
-}
-
-async function renderAttrition(el){
-  el.innerHTML='<div class="loading-ai"><div class="dot-anim"><span></span><span></span><span></span></div>Sending connected HR data to Gemini Attrition AI...</div>';
-  try{await loadAdminRecords();}catch(err){}
-  const rows=(adminEmployees.length?adminEmployees:employees).slice();
-  const localProfiles=rows.map(employeeAttritionProfile);
-  const profileByName=Object.fromEntries(localProfiles.map(p=>[p.employee.name,p]));
-  const contexts=localProfiles.map(p=>{
-    const e=p.employee;
-    const latest=getLatestDailyUpdateAny(e);
-    const joined=new Date(e.joined||Date.now());
-    const now=new Date();
-    const tenureMonths=Number.isFinite(joined.getTime())?Math.max(0,(now.getFullYear()-joined.getFullYear())*12+now.getMonth()-joined.getMonth()):0;
-    return {
-      id:e.id,
-      name:e.name,
-      role:e.role,
-      department:e.dept,
-      status:effectiveEmployeeStatus(e),
-      performance:p.perf,
-      attendance:p.attendance,
-      sentiment:p.sentiment.label,
-      sentiment_updates:p.sentiment.count,
-      task_status:latest?.task_status||'No update',
-      career_gap:p.biggestGap?.skill||'None',
-      tenure_months:tenureMonths
-    };
-  });
-  let aiResult;
-  try{
-    aiResult=await apiPost('/api/ai/attrition',{employees:contexts});
-  }catch(err){
-    aiResult={
-      model:'Connected HR data',
-      insight:'Using connected employee, attendance, sentiment, task, performance, and career data for attrition risk analysis.',
-      counts:{
-        High:localProfiles.filter(p=>p.risk==='High').length,
-        Medium:localProfiles.filter(p=>p.risk==='Medium').length,
-        Low:localProfiles.filter(p=>p.risk==='Low').length
-      },
-      employees:localProfiles.map(p=>({
-        name:p.employee.name,
-        risk:p.risk,
-        risk_score:p.score,
-        reasons:p.reasons,
-        recommendation:p.risk==='High'?'Schedule an immediate 1:1 and review workload, attendance, and growth plan.':p.risk==='Medium'?'Monitor closely and set a manager check-in.':'Continue normal manager check-ins.'
-      }))
-    };
-  }
-  const aiRows=localProfiles.map(profile=>({
-    name:profile.employee.name,
-    risk:profile.risk,
-    risk_score:profile.score,
-    reasons:profile.reasons,
-    recommendation:profile.recommendation,
-    employee:profile.employee,
-    profile
-  })).sort((a,b)=>(Number(b.risk_score)||0)-(Number(a.risk_score)||0)||String(a.name).localeCompare(String(b.name)));
-  const high=aiRows.filter(p=>p.risk==='High').length;
-  const medium=aiRows.filter(p=>p.risk==='Medium').length;
-  const low=aiRows.filter(p=>p.risk==='Low').length;
-  const avgPerf=rows.length?Math.round(rows.reduce((sum,e)=>sum+getEmployeePerformanceScore(e),0)/rows.length):0;
-  const avgAttendance=localProfiles.length?Math.round(localProfiles.reduce((sum,p)=>sum+p.attendance,0)/localProfiles.length):0;
-  const dailyUpdates=loadDailyUpdates().length;
-  const careerNeeds=localProfiles.filter(p=>p.biggestGap&&p.biggestGap.need-p.biggestGap.have>=18).length;
-  el.innerHTML=`
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header">
-    <div>
-      <div class="card-title">Live Attrition AI</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:3px">Risk is calculated from live Employees, Attendance, Sentiment AI, Performance, Tasks, and Career AI inputs. Gemini explains the connected data.</div>
-    </div>
-    <span class="ai-chip"><span class="pulse"></span>${escapeHtml(aiResult.model||'Gemini')}</span>
-  </div>
-  <div class="grid3">
-    <div style="padding:14px;background:var(--red-soft);border-radius:10px;border-left:3px solid var(--red)">
-      <div style="font-size:11px;font-weight:600;color:#B91C1C;text-transform:uppercase;letter-spacing:0.4px">High Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--red)">${high}</div>
-      <div style="font-size:11px;color:#B91C1C">Immediate 1:1 required</div>
-    </div>
-    <div style="padding:14px;background:var(--amber-soft);border-radius:10px;border-left:3px solid var(--amber)">
-      <div style="font-size:11px;font-weight:600;color:#92400E;text-transform:uppercase;letter-spacing:0.4px">Medium Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--amber)">${medium}</div>
-      <div style="font-size:11px;color:#92400E">Monitor closely</div>
-    </div>
-    <div style="padding:14px;background:var(--green-soft);border-radius:10px;border-left:3px solid var(--green)">
-      <div style="font-size:11px;font-weight:600;color:#15803D;text-transform:uppercase;letter-spacing:0.4px">Low Risk</div>
-      <div style="font-size:32px;font-weight:700;color:var(--green)">${low}</div>
-      <div style="font-size:11px;color:#15803D">Stable employees</div>
-    </div>
-  </div>
-</div>
-<div class="grid4" style="margin-bottom:16px">
-  <div class="metric-card"><div class="metric-label">Employee Source</div><div class="metric-value">${rows.length}</div><div class="metric-delta up">Matches employee directory</div></div>
-  <div class="metric-card"><div class="metric-label">Avg Attendance</div><div class="metric-value">${avgAttendance}%</div><div class="metric-delta up">From clock in/out</div></div>
-  <div class="metric-card"><div class="metric-label">Avg Performance</div><div class="metric-value">${avgPerf}</div><div class="metric-delta up">From performance scores</div></div>
-  <div class="metric-card"><div class="metric-label">Daily Updates</div><div class="metric-value">${dailyUpdates}</div><div class="metric-delta ${dailyUpdates?'up':'down'}">${dailyUpdates?'Feeds sentiment':'No sentiment updates yet'}</div></div>
-</div>
-<div class="card" style="margin-bottom:16px">
-  <div class="card-header"><div class="card-title">How This Page Is Connected</div></div>
-  <div class="grid4" style="margin-bottom:0">
-    <button class="btn" onclick="showPage('employees')"><i class="ti ti-users" aria-hidden="true"></i> Employees: ${rows.length}</button>
-    <button class="btn" onclick="showPage('attendance')"><i class="ti ti-clock" aria-hidden="true"></i> Attendance: ${avgAttendance}% avg</button>
-    <button class="btn" onclick="showPage('sentiment')"><i class="ti ti-activity" aria-hidden="true"></i> Sentiment: ${dailyUpdates} updates</button>
-    <button class="btn" onclick="showPage('career')"><i class="ti ti-trending-up" aria-hidden="true"></i> Career gaps: ${careerNeeds}</button>
-  </div>
-</div>
-<div class="card">
-  <div class="card-header"><div class="card-title">Employee Risk Table</div><span class="badge badge-gray">${aiRows.length} employees</span></div>
-  <div class="table-wrap"><table>
-    <tr><th>Employee</th><th>Dept</th><th>Performance</th><th>Attendance</th><th>Sentiment</th><th>Career Focus</th><th>Live Risk</th><th>Reason</th><th>Recommendation</th></tr>
-    ${aiRows.map(p=>{
-      const e=p.employee;
-      const profile=p.profile||{};
-      const badge=p.risk==='High'?'badge-red':p.risk==='Medium'?'badge-amber':'badge-green';
-      return `<tr>
-        <td><div class="emp-row"><div class="emp-avatar" style="background:${e.color||'var(--accent)'}20;color:${e.color||'var(--accent)'}">${escapeHtml(e.avatar||employeeInitials(e.name))}</div><div><div style="font-weight:500;color:var(--text)">${escapeHtml(e.name)}</div><div style="font-size:11px;color:var(--text3)">${escapeHtml(e.role||'Team Member')}</div></div></div></td>
-        <td>${escapeHtml(e.dept||'Unassigned')}</td>
-        <td>${profile.perf??'--'}%</td>
-        <td>${profile.attendance??'--'}%</td>
-        <td>${profile.sentiment?escapeHtml(profile.sentiment.label):'--'}${profile.sentiment?.count?` (${profile.sentiment.count})`:' (0)'}</td>
-        <td>${escapeHtml(profile.biggestGap?.skill||'On track')}</td>
-        <td><span class="badge ${badge}">${escapeHtml(p.risk)} ${Number(p.risk_score)||0}</span></td>
-        <td style="font-size:12px;color:var(--text2)">${(p.reasons||[]).map(r=>escapeHtml(r)).join(', ')||'Gemini did not provide a reason.'}</td>
-        <td style="font-size:12px;color:var(--text2)">${escapeHtml(p.recommendation||'Schedule a manager check-in.')}</td>
-      </tr>`;
-    }).join('')||'<tr><td colspan="9" style="color:var(--text3)">No employee records.</td></tr>'}
-  </table></div>
-  <div style="padding:12px;background:var(--purple-soft);border-radius:8px;margin-top:12px;font-size:12px;color:var(--text2);line-height:1.6">
-    <strong style="color:#5B21B6">AI Insight:</strong> ${escapeHtml(aiResult.insight||'Live attrition risk is generated from connected HR data.')}
-  </div>
-</div>`;
 }
 
 async function runPayroll(){
@@ -5956,7 +5652,7 @@ async function renderPerformance(el){
     <div class="stat-row"><span class="stat-name">Best department</span><span class="stat-val">${escapeHtml(deptPerf[0]?.dept||'--')} ${deptPerf[0]?deptPerf[0].avgPerf+'%':''}</span></div>
     <div class="stat-row"><span class="stat-name">Needs coaching</span><span class="stat-val">${needsCoaching.length?needsCoaching.map(e=>escapeHtml(e.name)).join(', '):'None'}</span></div>
     <div class="stat-row"><span class="stat-name">Strong performers</span><span class="stat-val">${topPerformers.length}/${scoredTeam.length}</span></div>
-    <div style="margin-top:12px;padding:12px;background:var(--accent-soft);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6">Score formula: Attendance 40% + Task completion 35% + Sentiment 25%. If attendance is 0 and task/sentiment are pending, the score stays 0 until the employee submits real activity.</div>
+    <div style="margin-top:12px;padding:12px;background:var(--accent-soft);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6">Score formula: Attendance 40% + Task completion 35% + Sentiment 25%. Employees with no live activity yet fall back to the performance baseline stored in the employee directory.</div>
   </div>
 </div>
 <div class="card" style="margin-top:16px">
@@ -5970,11 +5666,12 @@ async function renderPerformance(el){
       const action=score>=85?'Retain and grow':score>=75?'Maintain goals':'Schedule coaching';
       const taskText=e.breakdown.hasTodayUpdate?`${e.breakdown.task}%`:'Pending';
       const sentimentText=e.breakdown.hasTodayUpdate?`${e.breakdown.sentiment}%`:'Pending';
+      const liveInputs=e.breakdown.baseline?'Directory baseline score - no live activity yet':`Attendance ${e.breakdown.attendance}% · Task ${taskText} · Sentiment ${sentimentText}`;
       return `<tr>
         <td><div class="emp-row"><div class="emp-avatar" style="background:${e.color||'var(--accent)'}20;color:${e.color||'var(--accent)'}">${escapeHtml(e.avatar||employeeInitials(e.name))}</div><div><div style="font-weight:500;color:var(--text)">${escapeHtml(e.name)}</div><div style="font-size:11px;color:var(--text3)">${escapeHtml(e.role||'Team Member')}</div></div></div></td>
         <td>${escapeHtml(e.dept||'Unassigned')}</td>
         <td><div style="display:flex;align-items:center;gap:8px"><span style="font-weight:600">${score}%</span><div style="width:80px"><div class="progress-bar"><div class="progress-fill" style="width:${score}%;background:${score>=85?'#16A34A':score>=75?'#2563EB':'#DC2626'}"></div></div></div></div></td>
-        <td style="font-size:12px;color:var(--text2)">Attendance ${e.breakdown.attendance}% · Task ${taskText} · Sentiment ${sentimentText}</td>
+        <td style="font-size:12px;color:var(--text2)">${liveInputs}</td>
         <td><span class="badge ${badge}">${band}</span></td>
         <td style="font-size:12px;color:var(--text2)">${action}</td>
       </tr>`;

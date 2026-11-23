@@ -19,20 +19,20 @@ https://aether12345678.onrender.com/
 ## Main Features
 
 - Role-based login for Management Admin, Senior Manager, HR Recruiter, and Employee.
-- Management Admin dashboard with live employee counts, active-today count, open jobs, payroll, department distribution, analytics, performance, sentiment, attrition, and career AI.
+- Management Admin dashboard with live employee counts, active-today count, open jobs, payroll, department distribution, analytics, performance, and career AI.
 - Employee dashboard with personalized profile, attendance clock-in/clock-out, daily work updates, leave, payslips, performance, career growth, career opportunities, applications, HR chatbot, and AI voice interview.
-- Senior Manager dashboard with team overview, leave approvals, attendance, performance, sentiment, attrition risk, and coaching insights.
+- Senior Manager dashboard with team overview, leave approvals, attendance, performance, and coaching insights.
 - HR Recruiter dashboard with job postings, candidates, AI resume screening, candidate pipeline, and AI voice interview reports.
 - Internal job applications connecting Employee Career Opportunities with Recruiter Candidates and Management dashboards.
-- AI modules for recruitment, resume screening, voice interview evaluation, HR chatbot/copilot, sentiment, attrition, career growth, and AI match score.
+- AI modules for recruitment, resume screening, voice interview evaluation, HR chatbot/copilot, career growth, and AI match score.
 
 ## Data Sync
 
 The project is designed so key pages share the same live records:
 
-- Employee Directory drives dashboard employee counts, department distribution, payroll, analytics, performance, attrition, and career AI.
-- Employee clock-in/clock-out drives active-today status, attendance logs, performance, and attrition risk.
-- Employee daily work updates drive sentiment and performance calculations.
+- Employee Directory drives dashboard employee counts, department distribution, payroll, analytics, performance, and career AI.
+- Employee clock-in/clock-out drives active-today status, attendance logs, and performance.
+- Employee daily work updates drive performance and career calculations.
 - Recruiter Job Postings drive open positions and employee career opportunities.
 - Internal Applications drive recruiter candidates, employee application status, interview access, and selection outcomes.
 - Completed AI voice interviews notify HR and appear in the HR AI Voice Interview Report tab.
